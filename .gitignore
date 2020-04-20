@@ -1,0 +1,15 @@
+*.jpg
+Environments/
+opencv_testing/
+
+TP_App_Backend/.vscode/
+TP_App_Backend/__pycache__/
+TP_App_Backend/venv/
+TP_App_Backend/testimport.py
+
+
+TP_App_Frontend/.expo/
+TP_App_Frontend/.expo-shared/
+TP_App_Frontend/node_modules/
+TP_App_Frontend/assets/
+TP_App_Frontend/yarn.lock

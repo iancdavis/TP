@@ -4,7 +4,7 @@ opencv_testing/
 
 TP_App_Backend/.vscode/
 TP_App_Backend/__pycache__/
-TP_App_Backend/venv/
+TP_App_Backend/env/
 TP_App_Backend/testimport.py
 
 

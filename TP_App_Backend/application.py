@@ -6,6 +6,8 @@ import cv2
 import imutils
 import numpy as np
 
+import api
+
 UPLOAD_FOLDER = '/Users/iandavisSSD/programming/tp/TP_App_Backend/fileuploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
@@ -24,10 +26,14 @@ def index():
 def measure():
     if request.method == 'POST':
 
+        photoReady = False
+
         if 'file' not in request.files:
             flash('No file part')
             print('no file part')
             return jsonify('no file part')
+        else:
+            print('file is present')
         file = request.files['file']
 
         #check for empty filename
@@ -35,20 +41,24 @@ def measure():
             flash('no selected file')
             print('no selected file')
             return jsonify('no selected file')
+        else:
+            print('file is selected')
         
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return jsonify('file uploaded succesfully')
 
-        #noNumpyTest = cv2.imread(imageFile, 0)
+            photoReady = True
 
-        #image = np.array(imageFile)
-        
-        #test = cv2.imread(image, 0)
-        #cv2.imshow('image',test) #cant call imshow in flask route because it spawns a new thread
+            #return jsonify('file uploaded succesfully')
+        print(f'photoReady?: {photoReady}')
 
+        if photoReady:
+            api.measure()
+            print('measure called in main thread')
         return jsonify('the measurement')
+
+
     else:
         return jsonify('This was a GET request. To recieve a measurement please send a POST request with an image')
 

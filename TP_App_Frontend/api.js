@@ -23,7 +23,7 @@ export async function postPicture(photo){
     console.log(data)
 
     try {
-      return fetch('http://192.168.0.107:5000/measure', {
+        let response = await fetch('http://192.168.0.107:5000/measure', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -31,9 +31,9 @@ export async function postPicture(photo){
         },
         body: data
       })
-
       let json = await response.json()
-      console.log(`RESPONSE: ${json}`)
+      console.log(`RESPONSE in api: ${json}`)
+      return json
     } catch (error) {
       console.error(`Error in fetch: ${error}`)
     }

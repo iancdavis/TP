@@ -18,16 +18,11 @@ def measure():
     #gray = cv2.GaussianBlur(gray, (7, 7), 0)
     gray = cv2.bilateralFilter(gray, 30, 75, 75)
 
-    """ cv2.imshow('image', gray)
-    cv2.waitKey(0) """
     print('image loaded')
 
     #NOT ORIGINAL
     #ret,thresh3 = cv2.threshold(image,127,255,cv2.THRESH_TRUNC)
     ret,thresh3 = cv2.threshold(gray,100,255,0)
-
-    """ cv2.imshow('Threshold after Bilateral', thresh3)
-    cv2.waitKey(0) """
 
     edged = cv2.Canny(thresh3, 50, 100)
     edged = cv2.GaussianBlur(edged, (7, 7), 0)
@@ -39,9 +34,6 @@ def measure():
 
 
     #edged = cv2.Canny(gray, 50, 100)
-
-    """ cv2.imshow('just edges', edged)
-    cv2.waitKey(0) """
 
     edged = cv2.dilate(edged, None, iterations=1)
     edged = cv2.erode(edged, None, iterations=1)
@@ -133,4 +125,9 @@ def measure():
         """ cv2.imshow("Image", orig)
         cv2.waitKey(0) """
 
-        print('end of script')
+        #save image for testing
+        cv2.imwrite('responseImage.jpg', orig)
+
+        print('next contour')
+    print('exited contour loop')
+    return dimA

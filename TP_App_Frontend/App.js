@@ -9,6 +9,7 @@ export default function App() {
   const [type, setType] = useState(Camera.Constants.Type.back)
   const [ready, setReady] = useState(false)
   const [camera, setCamera] = useState(null)
+  const [tpSize, settpSize] = useState(null)
 
   useEffect(() => {
     (async () => {
@@ -25,14 +26,24 @@ export default function App() {
         base64: false,
         exif: true,
         skipProcessing: false,
-        //onPictureSaved: postPicture(),
       }
+
+      //Take picture
       let photo = await camera.takePictureAsync(options)
-      //console.log(photo)
+
+      //Send picture to server
       let measureResponse = await postPicture(photo)
-      
-      //let nothing = await testPost(photo)
-      //console.log(`app data: ${JSON.stringify(nothing['test response'])}`)
+      console.log(`Response in main thread: ${JSON.stringify(measureResponse)}`)
+      settpSize(measureResponse)
+      console.log(`TP Size: ${tpSize}`) //wont be current because component has not rerendered
+
+      /* //Equivalent way to send picture to server with then instead of await
+      postPicture(photo).then( (response) => {
+        console.log(`Response with then in main thread: ${response}`)
+        settpSize(response)
+        console.log(`TP Size: ${tpSize}`)
+      }) */
+
     }
     else {
       console.log('snap pressed but camera was not present')
@@ -70,6 +81,11 @@ export default function App() {
         onCameraReady={handleCameraReady}
         ratio={'16:9'}
       >
+        <View style={styles.measurementContainer}>
+          <Text style={styles.measurementText}>TP Measurement</Text>
+          <Text style={styles.measurementText}>{tpSize}in</Text>
+        </View>
+
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={handleFlip}>
             <Text style={styles.buttonText}> Flip </Text>
@@ -117,6 +133,16 @@ const styles = StyleSheet.create({
     fontSize: 18, 
     marginBottom: 10, 
     color: 'white'
+  },
+  measurementContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: Constants.statusBarHeight,
+  },
+  measurementText: {
+    fontSize: 32, 
+    color: 'white',
   }
 });
 

@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify, request, flash
+from flask import Flask, jsonify, request, flash, url_for
 from werkzeug.utils import secure_filename
 
 import cv2
@@ -54,9 +54,10 @@ def measure():
         print(f'photoReady?: {photoReady}')
 
         if photoReady:
-            api.measure()
+            tpMeasurement = api.measure()
             print('measure called in main thread')
-        return jsonify('the measurement')
+            #resp = {"image": url_for("responseImage", filename='responseImage.jpg')}
+        return jsonify(f"{tpMeasurement}")
 
 
     else:

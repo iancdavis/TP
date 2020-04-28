@@ -4,6 +4,7 @@ import { Camera, Constants } from 'expo-camera'
 
 import {postPicture, testPost} from './api'
 
+//react native screen that contains a camera view, and makes fetch request to backend
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null)
   const [type, setType] = useState(Camera.Constants.Type.back)
@@ -12,12 +13,14 @@ export default function App() {
   const [tpSize, settpSize] = useState(null)
 
   useEffect(() => {
+    //ask for camera permission on mount
     (async () => {
       const { status } = await Camera.requestPermissionsAsync()
       setHasPermission(status === 'granted')
     })()
   }, [])
 
+  //wrapper for call to takePictureAsync() that must be called in an async function
   async function takePicture(){
     if (camera) {
       console.log('snap pressed')
@@ -50,6 +53,7 @@ export default function App() {
     }
   }
 
+  //Flips camera between front and rear facing cameras
   function handleFlip() {
     setType(
       type === Camera.Constants.Type.back
@@ -58,6 +62,7 @@ export default function App() {
     )
   }
 
+  //check if camera has permission and is mounted
   function handleCameraReady() {
     if (hasPermission && camera) {
       setReady(true)
@@ -65,6 +70,7 @@ export default function App() {
     }
   }
 
+  //Alternate render views while camera is waiting for permissions
   if (hasPermission === null) {
     return <View/>
   }
